@@ -2,7 +2,7 @@ import csv
 import json
 from pathlib import Path
 from collections import Counter
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Any, List
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -23,7 +23,7 @@ def summarize_rows(rows: List[Dict[str, str]]) -> Dict[str, Any]:
     top_categories = [{"category": k, "count": v} for k, v in counts.most_common(5)]
 
     return {
-        "generated_at_utc": datetime.utcnow().isoformat() + "Z",
+        "generated_at_utc": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "rows_total": len(rows),
         "rows_valid": len(cleaned),
         "unique_categories": len(counts),
